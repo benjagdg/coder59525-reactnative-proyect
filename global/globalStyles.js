@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import globalColors from "./globalColors";
 
 const globalStyles = StyleSheet.create({
   container: {
@@ -10,6 +11,7 @@ const globalStyles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins-Black',
     fontSize: 24,
+    color: globalColors.primary,
   },
   subtitle: {
     fontFamily: 'Poppins-Light',
