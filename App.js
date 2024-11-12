@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 
-import globalStyles from './global/globalStyles';
+import MainNavigator from './navigation/MainNavigator';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,10 +30,8 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <View style={ globalStyles.container }>
-        <Text style={ [globalStyles.title, globalStyles.textCenter] }>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
+      <MainNavigator />
+      <StatusBar style="auto" />
     </Provider>
   );
 }
