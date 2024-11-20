@@ -16,6 +16,9 @@ const colors = {
   redColor: '#D32F2F',
   yellowColor: '#FFC107',
   lightBlueColor: '#2196F3',
+
+  semiTransparentBlack: 'rgba(0,0,0,0.5)',
+  semiTransparentWhite: 'rgba(255,255,255,0.5)',
 }
 
 export default colors;

@@ -21,28 +21,29 @@ export default HeaderComponent
 const styles = StyleSheet.create({
   container:{
     height: 80,
-    justifyContent:"flex-start",
-    alignItems:"center",
-    display:"flex",
-    flexDirection:"row",
-    padding:10,
-    backgroundColor:"white",
-    borderBottomWidth:1,
-    borderBottomColor:colors.lightBlue
+    justifyContent: "flex-start",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    padding: 10,
+    backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightBlue
   },
   logoContainer:{
-    flex:1,
-    display:"flex",
-    flexDirection:"row",
-    alignItems:"center"
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
   },
   headerTitle:{
-    fontSize:20,
-    fontWeight:"bold"
+    fontSize: 20,
+    fontFamily: "Poppins-Black",
+    marginTop: 2
   },
   sectionTitle:{
-    fontSize:16,
-    fontWeight:"bold"
+    fontSize: 16,
+    fontFamily: "Poppins-Light"
   }
 
 })
