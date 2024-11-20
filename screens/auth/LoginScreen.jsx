@@ -3,10 +3,11 @@ import authStyles from '../../styles/authStyles'
 
 import { useState } from 'react'
 
-const LoginScreen = () => {
+const LoginScreen = ( {navigation} ) => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [rememberMe, setRememberMe] = useState(false)
 
   return (
     <View style={authStyles.container}>
@@ -33,7 +34,7 @@ const LoginScreen = () => {
           />
         </View>
         <Pressable style={[authStyles.btnPrimary, authStyles.mb20]}><Text style={authStyles.btnText}>Iniciar sesión</Text></Pressable>
-        <Text style={authStyles.textSignUp}>¿No tienes una cuenta? Regístrate aquí</Text>
+        <Pressable onPress={ () => navigation.navigate('Signup') } style={authStyles.signUpPressable}><Text style={authStyles.textSignUp}>¿No tienes una cuenta? </Text><Text style={ {...authStyles.textSignUp , ...authStyles.textUnderline}}>Regístrate aquí</Text></Pressable>
         <Text style={authStyles.textSignUp}>o</Text>
         <Text style={authStyles.textSignUp}>ingresa como invitado</Text>
       </View>

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 
 import MainNavigator from './navigation/MainNavigator';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,9 +30,11 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
-      <MainNavigator />
-      <StatusBar style="auto" />
-    </Provider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <MainNavigator />
+        <StatusBar style="auto" />
+      </Provider>
+    </SafeAreaProvider>
   );
 }

@@ -61,11 +61,18 @@ const authStyles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16
   },
+  signUpPressable: {
+    flexDirection: 'column',
+  },
   textSignUp: {
     color: colors.textWhite,
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',
     fontSize: 16,
+  },
+  textUnderline: {
+    textDecorationLine: 'underline',
+    fontFamily: 'Poppins-Black',
   }
 });
 

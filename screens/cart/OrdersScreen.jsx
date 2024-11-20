@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const HomeNavigator = () => {
+const OrdersScreen = () => {
   return (
     <View>
-      <Text>HomeNavigator</Text>
+      <Text>OrdersScreen</Text>
     </View>
   )
 }
 
-export default HomeNavigator
+export default OrdersScreen
 
 const styles = StyleSheet.create({})
