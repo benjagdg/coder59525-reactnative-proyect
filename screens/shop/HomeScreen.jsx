@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 import CategoryCard from '../../components/CategoryCard';
 import colors from '../../styles/appColors'
@@ -25,11 +25,11 @@ const HomeScreen = ( {navigation} ) => {
 
   return (
     <>
-      <Text style={ styles.categoryTitle }>Buscar por categoría</Text>
+      <Text style={ styles.categoryTitle }>Nuestras categorías</Text>
       <ScrollView contentContainerStyle={{ padding: 10 }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
           {
-            isLoading ? <Text>Cargando...</Text> : 
+            isLoading ? <ActivityIndicator size="large" /> : 
             error ? <Text>Ocurrió un error</Text> : 
             categories.map((item, index) => renderCategories({item, index}))
           }

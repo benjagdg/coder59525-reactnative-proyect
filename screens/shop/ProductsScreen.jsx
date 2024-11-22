@@ -1,9 +1,10 @@
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { useSelector,useDispatch } from 'react-redux'
 import ProductListCard from '../../components/ProductListCard';
 import colors from '../../styles/appColors'
 import { useGetProductsByCategoryQuery } from '../../services/shopService'; 
-import { setProduct } from '../../features/shop/shopSlice';
+import { setProductId } from '../../features/shop/shopSlice';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const ProductsScreen = ( {navigation} ) => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const ProductsScreen = ( {navigation} ) => {
         product = {item}
         key = {item.id}
         onPress = { () => { 
-          dispatch(setProduct(item.nombre))
+          dispatch(setProductId(item.id))
           navigation.navigate('Producto')
         } }
       />
@@ -24,13 +25,19 @@ const ProductsScreen = ( {navigation} ) => {
   }
 
   return (
-    <>
-      <Text style={ styles.productsTitle }>Productos en "{category}"</Text>
+    <> 
+      <View style={styles.sectionHeader}>
+        <Pressable onPress={() => navigation.navigate('Inicio')} style={styles.backButton}>
+          <Icon name="arrow-back" size={30} color={colors.textWhite} />
+        </Pressable>
+        <Text style={ styles.productsTitle }>Productos en "{category}"</Text>
+      </View>
       <ScrollView style={styles.productsContainer}>
         <View style={styles.productContainer}>
           {
-            isLoading ? <Text>Cargando...</Text> : 
+            isLoading ? <ActivityIndicator size="large" /> : 
             error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> : 
+            productsByCategory.length === 0 ? <Text style={styles.productsEmpty}>No hay productos en esta categoría</Text> :
             productsByCategory.map((item, index) => renderProducts({item, index}))
           }
         </View>
@@ -56,6 +63,26 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  sectionHeader:{
+    backgroundColor: colors.primary,
+    width: '100%',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  backButton: {
+    backgroundColor: colors.lightBlue,
+    borderRadius: 50,
+  },
+  productsEmpty:{
+    color: colors.textPrimary,
+    fontSize: 18,
+    fontFamily: 'Poppins-Black',
+    paddingVertical: 40,
+    
   }
 })

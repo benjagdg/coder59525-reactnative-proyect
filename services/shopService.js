@@ -14,7 +14,13 @@ export const shopApi = createApi({
         response ? Object.values(response) : []
       )
     }),
+    getProductById : builder.query({
+      query: (id) => `products.json?orderBy="id"&equalTo=${id}`,
+      transformResponse: (response) => (
+        response ? Object.values(response)[0] : null
+      )
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery, useGetProductsByCategoryQuery } = shopApi;
+export const { useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery } = shopApi;

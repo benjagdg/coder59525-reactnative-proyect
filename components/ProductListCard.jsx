@@ -52,9 +52,10 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   productImage: {
-    width: productCardWidth,
+    maxWidth: productCardWidth,
     height: productCardWidth/1.5,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderRadius: 10
   },
   productTitle: {
     fontSize: 16  ,
