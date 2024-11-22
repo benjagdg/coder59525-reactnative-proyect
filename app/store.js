@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import shopReducer from "../features/shop/shopSlice";
+import { shopApi } from "../services/shopService";
 
 export const store = configureStore({
   reducer: {
     shopReducer: shopReducer,
+    [shopApi.reducerPath]: shopApi.reducer,
 
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware()
-  .concat()
+  .concat(shopApi.middleware)
 });

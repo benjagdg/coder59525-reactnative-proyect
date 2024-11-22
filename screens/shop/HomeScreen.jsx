@@ -1,33 +1,38 @@
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import CategoryCard from '../../components/CategoryCard';
 import colors from '../../styles/appColors'
+import { useGetCategoriesQuery } from '../../services/shopService';
+import { setCategory } from '../../features/shop/shopSlice';
 
-const categories = [
-  { title: 'Ropa', image: 'https://wabit.cl/coder_app/2.png' },
-  { title: 'Electrónica', image: 'https://wabit.cl/coder_app/1.png' },
-  { title: 'Hogar', image: 'https://wabit.cl/coder_app/3.png' },
-  { title: 'Ropa', image: 'https://wabit.cl/coder_app/2.png' },
-  { title: 'Electrónica', image: 'https://wabit.cl/coder_app/1.png' },
-  { title: 'Hogar', image: 'https://wabit.cl/coder_app/3.png' },
-  { title: 'Ropa', image: 'https://wabit.cl/coder_app/2.png' },
-  { title: 'Electrónica', image: 'https://wabit.cl/coder_app/1.png' },
-  { title: 'Hogar', image: 'https://wabit.cl/coder_app/3.png' },
-];
+const HomeScreen = ( {navigation} ) => {
+  const dispatch = useDispatch();
 
-const HomeScreen = () => {
+  const { data: categories, error, isLoading } = useGetCategoriesQuery();
+  const renderCategories = ({item, index}) => {
+    return (
+      <CategoryCard
+        title={item.title}
+        image={item.image}
+        key = {item.id}
+        onPress={ () => { 
+          dispatch(setCategory(item.title))
+          navigation.navigate('Productos')
+        } }
+      />
+    )
+  }
+
   return (
     <>
       <Text style={ styles.categoryTitle }>Buscar por categoría</Text>
       <ScrollView contentContainerStyle={{ padding: 10 }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-          {categories.map((category, index) => (
-            <CategoryCard
-              key={index}
-              title={category.title}
-              image={category.image}
-              onPress={() => alert(`Seleccionaste: ${category.title}`)}
-            />
-          ))}
+          {
+            isLoading ? <Text>Cargando...</Text> : 
+            error ? <Text>Ocurrió un error</Text> : 
+            categories.map((item, index) => renderCategories({item, index}))
+          }
         </View>
       </ScrollView>
     </>
@@ -39,7 +44,7 @@ export default HomeScreen
 const styles = StyleSheet.create({
   categoryTitle:{
     color: colors.textPrimary, 
-    fontSize: 22, 
+    fontSize: 18, 
     fontFamily: 'Poppins-Light', 
     marginTop: 10,
     marginStart:15 

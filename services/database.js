@@ -1,0 +1,1 @@
+export const firebase_base_url = 'https://wabitstore-coder-default-rtdb.firebaseio.com/';

@@ -15,6 +15,7 @@ const colors = {
   whiteColor: '#FFFFFF',
   redColor: '#D32F2F',
   yellowColor: '#FFC107',
+  greenColor: '#388E3C',
   lightBlueColor: '#2196F3',
 
   semiTransparentBlack: 'rgba(0,0,0,0.5)',

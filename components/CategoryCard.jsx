@@ -5,7 +5,7 @@ const categoryCardWidth = Dimensions.get('window').width / 2 - 20
 
 const CategoryCard = ({ title, image, onPress }) => {
   return (
-    <TouchableOpacity style={styles.categoryCard} onPress={onPress}>
+    <TouchableOpacity style={styles.categoryCard} onPress={onPress}  >
       <ImageBackground source={{ uri: image }} style={styles.categoryImageBackground} imageStyle={styles.categoryImage}>
         <View style={styles.categoryCardOverlay}>
           <Text style={styles.categoryTitle}>{title}</Text>
@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
   categoryTitle: {
     color: '#fff',
     fontFamily: 'Poppins-Regular',
-    fontSize: 24,
+    fontSize: 20,
     textAlign: 'center',
+    paddingHorizontal: 10
   },
 })
