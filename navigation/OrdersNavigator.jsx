@@ -11,7 +11,7 @@ const OrdersNavigator = () => {
         header: ({route}) => <HeaderComponent sectionTitle={route.name} />
       } }
     >
-      <Stack.Screen name="Mis compras" component={OrdersScreen} />
+      <Stack.Screen name="Tus compras" component={OrdersScreen} />
     </Stack.Navigator>
   )
 }
