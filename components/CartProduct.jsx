@@ -1,7 +1,36 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import colors from '../styles/appColors'
+import { useDispatch } from 'react-redux'
+import { addItemQuantityToCart, removeItemQuantityFromCart } from '../features/cart/cartSlice'
+import Toast from 'react-native-toast-message'
 
 const CartProduct = ( {product} ) => {
+  const dispatch = useDispatch()
+
+  const addQuantityProduct = () => {
+    try {
+      dispatch(addItemQuantityToCart(product.id))
+      showToast('success', 'Producto agregado al carrito');
+    } catch (error) {
+      showToast('error', 'Stock insuficiente');
+    }
+    
+  }
+
+  const removeQuantityProduct = () => {
+    dispatch(removeItemQuantityFromCart(product.id))
+  }
+
+  const showToast = (type, message) => {
+    Toast.show({
+        type: type,
+        text1: message,
+        visibilityTime: 2000,
+        position: 'bottom',
+        bottomOffset: 100
+    });
+  };
+
   return (
     <View style={styles.productCartContainer}>
       <View style={styles.productCartImageContainer}>
@@ -19,11 +48,11 @@ const CartProduct = ( {product} ) => {
         </View>
       </View>
       <View style={styles.productCartButtons}>
-        <Pressable style={styles.cartButton}>
+        <Pressable style={styles.cartButton} onPress={ removeQuantityProduct }>
           <Text style={styles.cartButtonText}>-</Text>
         </Pressable>
         <Text style={styles.cartQuantity}>{product.quantity}</Text>
-        <Pressable style={styles.cartButton}>
+        <Pressable style={styles.cartButton} onPress={ addQuantityProduct }>
           <Text style={styles.cartButtonText}>+</Text>
         </Pressable>
       </View>
