@@ -13,6 +13,7 @@ const Tab = createBottomTabNavigator()
 const TabNavigator = () => {
   const cartLength = useSelector(state => state.cartReducer.value.cartLength)
   const [cartNumLenght, setCartNumLength] = useState(0)
+  
   useEffect(() => {
     setCartNumLength(cartLength)
   }, [cartLength])

@@ -48,7 +48,7 @@ const HomeScreen = ( {navigation} ) => {
         <View>
           <Text style={ styles.categoryTitle }>Productos visitados recientemente:</Text>
             <ScrollView horizontal bounces={false} >
-              <FlatList data={productsVisited} numColumns={4} renderItem={(item, index) => (renderRecentProducts({item, index})) } />
+              <FlatList data={productsVisited} numColumns={5} renderItem={(item, index) => (renderRecentProducts({item, index})) } />
             </ScrollView>
         </View>:
         null

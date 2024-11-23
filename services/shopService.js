@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { firebase_base_url } from "./database";
+import { firebase_base_url } from "./firebase";
 
 export const shopApi = createApi({
   reducerPath: "shopApi",

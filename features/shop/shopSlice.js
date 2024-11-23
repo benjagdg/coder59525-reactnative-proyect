@@ -17,7 +17,10 @@ export const shopSlice = createSlice({
       state.value.productId = action.payload;
     },
     setProductsVisited: (state, action) => {
+      if(state.value.productsVisited.length === 5)
+        action.payload.shift();
       state.value.productsVisited = action.payload;
+
     }
   }
 });
