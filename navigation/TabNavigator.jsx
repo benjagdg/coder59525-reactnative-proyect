@@ -7,9 +7,16 @@ import OrdersNavigator from './OrdersNavigator'
 import ProfileNavigator from './ProfileNavigator'
 import colors from '../styles/appColors'
 import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+
 const Tab = createBottomTabNavigator()
 const TabNavigator = () => {
   const cartLength = useSelector(state => state.cartReducer.value.cartLength)
+  const [cartNumLenght, setCartNumLength] = useState(0)
+  useEffect(() => {
+    setCartNumLength(cartLength)
+  }, [cartLength])
+  
   return (
     <Tab.Navigator
       initialRouteName="Shop"
@@ -34,7 +41,7 @@ const TabNavigator = () => {
         component={CartNavigator} 
         options={{
           tabBarIcon: ({focused})=>(<Icon name="shopping-cart" size={32} color={focused?colors.lightBlue:colors.textSecondary} />),
-          tabBarBadge: cartLength > 0 ? cartLength : 0
+          tabBarBadge: cartNumLenght > 0 ? cartNumLenght : 0
         }}
       />
       <Tab.Screen 

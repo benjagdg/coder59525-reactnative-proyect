@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
+import Toast from 'react-native-toast-message';
 
 import MainNavigator from './navigation/MainNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -35,6 +36,7 @@ export default function App() {
         <MainNavigator />
         <StatusBar style="auto" />
       </Provider>
+      <Toast />
     </SafeAreaProvider>
   );
 }

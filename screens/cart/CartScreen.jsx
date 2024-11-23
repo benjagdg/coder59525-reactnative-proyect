@@ -1,20 +1,104 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import colors from '../../styles/appColors'
+import CartProduct from '../../components/CartProduct'
 
-const CartScreen = () => {
-  const dispatch = useDispatch();
+const CartScreen = ({ navigation }) => {
 
   const cartItems = useSelector(state => state.cartReducer.value.cartItems)
   const cartTotal = useSelector(state => state.cartReducer.value.cartTotal)
   const cartLength = useSelector(state => state.cartReducer.value.cartLength)
 
+  const renderCartProducts = ({item, index}) => {
+    return (
+      <CartProduct
+        product = {item}
+        key = {item.id}
+      />
+    )
+  }
+
   return (
-    <View>
-      <Text>CartScreen</Text>
-    </View>
+    <>
+      <View style={styles.sectionHeader}>
+        <Pressable onPress={() => navigation.navigate('Productos')} style={styles.backButton}>
+          <Icon name="arrow-back" size={30} color={colors.textWhite} />
+        </Pressable>
+        <Text style={ styles.sectionTitle }>Tu Carrito</Text>
+      </View>
+      {
+        cartLength === 0 ? 
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+          <Text style={styles.sectionTitle}>Tu carrito está vacío</Text>
+        </View> :
+
+        <View style={styles.cartContainer}>
+          <FlatList
+            data={cartItems}
+            renderItem={renderCartProducts}
+            keyExtractor={item => item.id}
+          />
+          <View style={styles.cartTotal}>
+            <Text style={styles.cartTotalText}>Total: {new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(cartTotal)}</Text>
+            <Pressable style={styles.cartButton}>
+              <Text style={styles.cartButtonText}><Icon name="add-card" size={22} color={colors.textWhite} /></Text>
+              <Text style={styles.cartButtonText}>Ir a pagar</Text>
+            </Pressable>
+          </View>
+        </View>
+      }
+    </>
   )
 }
 
 export default CartScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  sectionHeader: {
+    flexDirection: 'row',
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10
+  },
+  backButton: {
+    backgroundColor: colors.lightBlue,
+    borderRadius: 50,
+  },
+  sectionTitle:{
+    color: colors.textPrimary, 
+    fontSize: 16, 
+    fontFamily: 'Poppins-Light', 
+    marginVertical: 10,
+    marginStart:15 
+  },
+  cartContainer: {
+    flex: 1,
+    padding: 10
+  },
+  cartTotal: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10
+  },
+  cartTotalText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Black',
+    color: colors.textPrimary
+  },
+  cartButton: {
+    backgroundColor: colors.greenColor,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+  },
+  cartButtonText: {
+    color: colors.textWhite,
+    fontSize: 16,
+    fontFamily: 'Poppins-Light',
+    paddingHorizontal: 5
+  }
+
+})

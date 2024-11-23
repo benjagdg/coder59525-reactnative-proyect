@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { setProductsVisited } from '../../features/shop/shopSlice'
 import { addItemToCart } from '../../features/cart/cartSlice'
 import { useEffect } from 'react'
+import Toast from 'react-native-toast-message'
 
 const ProductScreen = ( {navigation} ) => {
   const dispatch = useDispatch();
@@ -18,6 +19,21 @@ const ProductScreen = ( {navigation} ) => {
       if(!productsVisited.some(item => item[0] === product.id))
         dispatch(setProductsVisited([...productsVisited, [product.id, product.nombre, product.descripcion, product.imagen]]));
   }, [product])
+
+  const addProductToCart = () => {
+    dispatch(addItemToCart({...product}))
+    showToast('success', 'Producto agregado al carrito');
+  }
+
+  const showToast = (type, message) => {
+    Toast.show({
+        type: type,
+        text1: message,
+        visibilityTime: 2000,
+        position: 'bottom',
+        bottomOffset: 100
+    });
+  };
 
   return (
     <> 
@@ -41,7 +57,7 @@ const ProductScreen = ( {navigation} ) => {
               <Text style={styles.productPrice}>{new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(product.precio)}</Text>
               <Text style={styles.productStock}>Stock: {product.stock}</Text>
             </View>
-            <Pressable style={styles.cartButton} onPress={ () => { dispatch(addItemToCart({...product})) } }>
+            <Pressable style={styles.cartButton} onPress={ addProductToCart }>
               <Text style={styles.cartButtonText}><Icon name="add-shopping-cart" size={20} /></Text>
               <Text style={styles.cartButtonText}> Agregar al carrito</Text>
             </Pressable>
