@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../../styles/appColors'
 import CartProduct from '../../components/CartProduct'
