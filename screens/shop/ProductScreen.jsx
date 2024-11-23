@@ -4,6 +4,7 @@ import { useGetProductByIdQuery } from '../../services/shopService'
 import colors from '../../styles/appColors'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { setProductsVisited } from '../../features/shop/shopSlice'
+import { addItemToCart } from '../../features/cart/cartSlice'
 import { useEffect } from 'react'
 
 const ProductScreen = ( {navigation} ) => {
@@ -40,7 +41,7 @@ const ProductScreen = ( {navigation} ) => {
               <Text style={styles.productPrice}>{new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(product.precio)}</Text>
               <Text style={styles.productStock}>Stock: {product.stock}</Text>
             </View>
-            <Pressable style={styles.cartButton} onPress={() => {navigation.navigate('Cart')}}>
+            <Pressable style={styles.cartButton} onPress={ () => { dispatch(addItemToCart({...product})) } }>
               <Text style={styles.cartButtonText}><Icon name="add-shopping-cart" size={20} /></Text>
               <Text style={styles.cartButtonText}> Agregar al carrito</Text>
             </Pressable>
