@@ -21,6 +21,10 @@ const ProductsScreen = ( {navigation} ) => {
       setFilteredProducts(productsByCategory.filter(product => product.nombre.toLowerCase().includes(search.toLowerCase())))
   },[search, productsByCategory])
 
+  useEffect(() => {
+    if(category === '') navigation.navigate('Inicio')
+  }, [])
+
   const renderProducts = ({item, index}) => {
     return (
       <ProductListCard
