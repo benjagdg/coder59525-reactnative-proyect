@@ -46,7 +46,7 @@ const HomeScreen = ( {navigation} ) => {
       {
         productsVisited.length > 0 ?
         <View>
-          <Text style={ styles.categoryTitle }>Productos visitados recientemente:</Text>
+          <Text style={ styles.categoryTitle }>Productos visitados recientemente</Text>
             <ScrollView horizontal bounces={false} >
               <FlatList data={productsVisited} numColumns={5} renderItem={(item, index) => (renderRecentProducts({item, index})) } />
             </ScrollView>
@@ -71,9 +71,9 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   categoryTitle:{
-    color: colors.textPrimary, 
-    fontSize: 18, 
-    fontFamily: 'Poppins-Light', 
+    color: colors.lightBlue, 
+    fontSize: 16, 
+    fontFamily: 'Poppins-Regular', 
     marginTop: 10,
     marginStart:15 
   },

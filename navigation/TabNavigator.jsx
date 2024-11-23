@@ -42,7 +42,7 @@ const TabNavigator = () => {
         component={CartNavigator} 
         options={{
           tabBarIcon: ({focused})=>(<Icon name="shopping-cart" size={32} color={focused?colors.lightBlue:colors.textSecondary} />),
-          tabBarBadge: cartNumLenght > 0 ? cartNumLenght : 0
+          tabBarBadge: cartNumLenght > 0 ? cartNumLenght : null
         }}
       />
       <Tab.Screen 

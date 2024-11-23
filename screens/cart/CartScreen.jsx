@@ -1,14 +1,19 @@
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../../styles/appColors'
 import CartProduct from '../../components/CartProduct'
+import { useCreateOrderMutation } from '../../services/orderService'
+import { cleanCart } from '../../features/cart/cartSlice'
 
 const CartScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
 
-  const cartItems = useSelector(state => state.cartReducer.value.cartItems)
-  const cartTotal = useSelector(state => state.cartReducer.value.cartTotal)
-  const cartLength = useSelector(state => state.cartReducer.value.cartLength)
+  const cartItems = useSelector(state => state.cartReducer.value.cartItems);
+  const cartTotal = useSelector(state => state.cartReducer.value.cartTotal);
+  const cartLength = useSelector(state => state.cartReducer.value.cartLength);
+
+  const [createOrder] = useCreateOrderMutation();
 
   const renderCartProducts = ({item, index}) => {
     return (
@@ -17,6 +22,12 @@ const CartScreen = ({ navigation }) => {
         key = {item.id}
       />
     )
+  }
+
+  const cartOrderProcess = () => {
+    createOrder({cartItems, cartTotal, createdAt: Date.now()})
+    dispatch(cleanCart())
+    navigation.navigate('Orders')
   }
 
   return (
@@ -41,9 +52,11 @@ const CartScreen = ({ navigation }) => {
           />
           <View style={styles.cartTotal}>
             <Text style={styles.cartTotalText}>Total: {new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(cartTotal)}</Text>
-            <Pressable style={styles.cartButton}>
-              <Text style={styles.cartButtonText}><Icon name="add-card" size={22} color={colors.textWhite} /></Text>
-              <Text style={styles.cartButtonText}>Ir a pagar</Text>
+            <Pressable 
+              style={styles.cartButton} 
+              onPress={ ()=>{ cartOrderProcess() } }>
+              <Text style={styles.cartButtonText}>Confirmar</Text>
+              <Text style={styles.cartButtonText}><Icon name="shopping-cart-checkout" size={22} color={colors.textWhite} /></Text>
             </Pressable>
           </View>
         </View>
