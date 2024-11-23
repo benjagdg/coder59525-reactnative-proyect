@@ -1,12 +1,22 @@
 import { StyleSheet, Text, View, Pressable, Image, ActivityIndicator } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useGetProductByIdQuery } from '../../services/shopService'
 import colors from '../../styles/appColors'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { setProductsVisited } from '../../features/shop/shopSlice'
+import { useEffect } from 'react'
 
 const ProductScreen = ( {navigation} ) => {
+  const dispatch = useDispatch();
   const productId = useSelector(state => state.shopReducer.value.productId)
+  const productsVisited = useSelector(state => state.shopReducer.value.productsVisited)
+  
   const {data: product, error, isLoading} = useGetProductByIdQuery(productId);
+  useEffect(() => {
+    if(product)
+      if(!productsVisited.some(item => item[0] === product.id))
+        dispatch(setProductsVisited([...productsVisited, [product.id, product.nombre, product.descripcion, product.imagen]]));
+  }, [product])
 
   return (
     <> 
@@ -19,10 +29,11 @@ const ProductScreen = ( {navigation} ) => {
       <View style={styles.productContainer}>
         {
           isLoading ? <ActivityIndicator size="large" />  : 
-          error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> : 
+          error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> :
           product.length === 0 ? <Text style={styles.productEmpty}>El producto seleccionado ya no existe.</Text> :
+          
           <View style={styles.productProfile}>
-            <Text style={styles.productTitle}>{product.id} {product.nombre}</Text>
+            <Text style={styles.productTitle}>{product.nombre}</Text>
             <Image source={{ uri: product.imagen }} style={styles.productImage} />
             <Text style={styles.productDescription}>{product.descripcion}</Text>
             <View style={styles.productDetails}>

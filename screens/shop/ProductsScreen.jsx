@@ -1,5 +1,6 @@
-import { ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
-import { useSelector,useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react';
+import { ScrollView, View, Text, StyleSheet, Pressable, ActivityIndicator, TextInput } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux'
 import ProductListCard from '../../components/ProductListCard';
 import colors from '../../styles/appColors'
 import { useGetProductsByCategoryQuery } from '../../services/shopService'; 
@@ -9,8 +10,17 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 const ProductsScreen = ( {navigation} ) => {
   const dispatch = useDispatch();
   const category = useSelector(state => state.shopReducer.value.categorySelected)
-
+  const [search, setSearch] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const { data: productsByCategory, error, isLoading } = useGetProductsByCategoryQuery(category);
+
+  useEffect(() => {
+    if(productsByCategory && productsByCategory.length > 0)
+      setFilteredProducts(productsByCategory)
+    if(search)
+      setFilteredProducts(productsByCategory.filter(product => product.nombre.toLowerCase().includes(search.toLowerCase())))
+  },[search, productsByCategory])
+
   const renderProducts = ({item, index}) => {
     return (
       <ProductListCard
@@ -26,19 +36,29 @@ const ProductsScreen = ( {navigation} ) => {
 
   return (
     <> 
-      <View style={styles.sectionHeader}>
-        <Pressable onPress={() => navigation.navigate('Inicio')} style={styles.backButton}>
-          <Icon name="arrow-back" size={30} color={colors.textWhite} />
-        </Pressable>
-        <Text style={ styles.productsTitle }>Productos en "{category}"</Text>
+      <View >
+        <View style={styles.sectionHeader}>
+          <Pressable onPress={() => navigation.navigate('Inicio')} style={styles.backButton}>
+            <Icon name="arrow-back" size={30} color={colors.textWhite} />
+          </Pressable>
+          <Text style={ styles.productsTitle }>Productos en "{category}"</Text>
+        </View>
+        <View style={styles.sectionHeader}>
+          <Icon name="search" size={30} color={colors.textDark} />
+          <TextInput 
+            placeholder="Busca tu producto"
+            onChangeText={(text)=>setSearch(text)}
+            style={styles.searchInput}
+          />
+        </View>
       </View>
       <ScrollView style={styles.productsContainer}>
         <View style={styles.productContainer}>
           {
             isLoading ? <ActivityIndicator size="large" /> : 
             error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> : 
-            productsByCategory.length === 0 ? <Text style={styles.productsEmpty}>No hay productos en esta categoría</Text> :
-            productsByCategory.map((item, index) => renderProducts({item, index}))
+            filteredProducts.length === 0 ? <Text style={styles.productsEmpty}>0 productos encontrados...</Text> :
+            filteredProducts.map((item, index) => renderProducts({item, index}))
           }
         </View>
       </ScrollView>
@@ -49,6 +69,13 @@ const ProductsScreen = ( {navigation} ) => {
 export default ProductsScreen
 
 const styles = StyleSheet.create({
+  searchInput:{
+    width: '90%',
+    backgroundColor: colors.lightBackground,
+    padding: 10,
+    borderRadius: 10,
+    marginEnd: 10,
+  },
   productsTitle:{
     color: colors.textPrimary, 
     fontSize: 16, 

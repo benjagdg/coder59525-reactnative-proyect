@@ -8,7 +8,6 @@ const ProductListCard = ({ product, onPress }) => {
   let productStock = product.stock
   let stockStyle = styles.stockHigh
 
-  /* Stock high > 10, stock available 5 <= stock >=10  stock low < 5 */
   if (productStock < 5) {
     stockStyle = styles.stockLow
   }
@@ -27,7 +26,6 @@ const ProductListCard = ({ product, onPress }) => {
 
 
   return (
-    /* Make a product card, for a list of products. With a image on top, below that a title with descripción, price, stock and a button to view the product details */
     <TouchableOpacity style={styles.productCard} onPress={onPress}>
       <Image source={{ uri: product.imagen }} style={styles.productImage} />
       <Text style={styles.productTitle}>{product.nombre}</Text>
