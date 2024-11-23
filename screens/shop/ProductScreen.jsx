@@ -21,8 +21,12 @@ const ProductScreen = ( {navigation} ) => {
   }, [product])
 
   const addProductToCart = () => {
-    dispatch(addItemToCart({...product}))
-    showToast('success', 'Producto agregado al carrito');
+    try {
+      dispatch(addItemToCart({...product}));
+      showToast('success', 'Producto agregado al carrito');
+    } catch (error) {
+      showToast('error', 'Límite de stock alcanzado');
+    }
   }
 
   const showToast = (type, message) => {

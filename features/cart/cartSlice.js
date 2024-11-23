@@ -14,6 +14,9 @@ export const cartSlice = createSlice({
     addItemToCart: (state, action) => {
       const productExistsInCart = state.value.cartItems.find(item => item.id === action.payload.id);
       if(productExistsInCart){
+        if(productExistsInCart.quantity >= action.payload.stock){
+          throw new Error('Stock insuficiente');
+        }
         productExistsInCart.quantity++;
       }else{
         state.value.cartItems.push({...action.payload, quantity: 1});
