@@ -5,10 +5,16 @@ import { setUser } from "../features/auth/authSlice"
 import { fetchSession } from "../services/sqlite"
 import Toast from "react-native-toast-message"
 import { useSelector, useDispatch } from "react-redux"
+import { useGetUserPictureQuery } from "../services/userService"
+import { setProfilePicture } from "../features/auth/authSlice"
 
 const MainNavigator = () => {
   const dispatch = useDispatch()
+  
   const user = useSelector(state=>state.authReducer.value.user)
+  const localId = useSelector(state=>state.authReducer.value.localId)
+  const {data: userPicture, isLoading, error } = useGetUserPictureQuery(localId)
+
   useEffect(()=>{
     if(!user){
       (async ()=>{
@@ -23,6 +29,12 @@ const MainNavigator = () => {
       })()
     }
   },[user])
+
+  useEffect(()=>{
+    if(userPicture){
+      dispatch(setProfilePicture(userPicture.image))
+    }
+  }, [userPicture])
 
   const showToast = (type, message) => {
     Toast.show({
