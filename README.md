@@ -18,7 +18,7 @@ El proyecto consiste en una tienda online con las siguientes características:
 - Inicio de sesión o registro de usuarios requerido para el Checkout del Carrito
 - En la screen de Inicio se pueden visualizar hasta los últimos 5 productos que el cliente ha visitado
 - Posee persistencia de inicio de sesión gracias a SQLite
-- El checkout del carrito permite seleccionar la dirección del envío de la compra a través del uso del GPS
+- Registro de Ordenes de compra por usuario
 - La Screen de Perfil de Usuario, permite tomar una foto con la cámara del dispositivo para utilizarla de foto de perfil
 
 **Te dejo invitado a probar la aplicación para descubrir otras funcionalidades**
