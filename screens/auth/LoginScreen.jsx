@@ -1,13 +1,50 @@
-import { Text, View, TextInput, Pressable, Image } from 'react-native'
-import authStyles from '../../styles/authStyles'
+import { Text, View, TextInput, Pressable, Image, ActivityIndicator } from 'react-native'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import Toast from 'react-native-toast-message'
 
-import { useState } from 'react'
+import authStyles from '../../styles/authStyles'
+import { useUserLoginMutation } from '../../services/authService'
+import { setUser } from '../../features/auth/authSlice'
+import { insertSession } from '../../services/sqlite'
 
 const LoginScreen = ( {navigation} ) => {
-
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [rememberMe, setRememberMe] = useState(false)
+
+  const [triggerLogin, result] = useUserLoginMutation()
+
+  const submitLogin = () => {
+    if(email === '' || password === ''){
+      showToast('error', 'Debes completar todos los campos')
+      return
+    }
+    const emailLower = email.toLowerCase();
+    triggerLogin({emailLower, password})
+  }
+
+  useEffect( () => {
+    if (result.isSuccess) {
+      dispatch(setUser(result.data));
+      insertSession(result.data);
+
+      navigation.navigate('Inicio');
+      showToast('success', 'Inicio de sesión exitoso');
+    }else if (result.isError) {
+      showToast('error', 'Error al iniciar sesión, vuelva a intentarlo');
+    }
+  }, [result])
+
+  const showToast = (type, message) => {
+    Toast.show({
+        type: type,
+        text1: message,
+        visibilityTime: 2000,
+        position: 'bottom',
+        bottomOffset: 100
+    });
+  };
 
   return (
     <View style={authStyles.container}>
@@ -33,10 +70,19 @@ const LoginScreen = ( {navigation} ) => {
               secureTextEntry
           />
         </View>
-        <Pressable style={[authStyles.btnPrimary, authStyles.mb20]}><Text style={authStyles.btnText}>Iniciar sesión</Text></Pressable>
-        <Pressable onPress={ () => navigation.navigate('Signup') } style={authStyles.signUpPressable}><Text style={authStyles.textSignUp}>¿No tienes una cuenta? </Text><Text style={ {...authStyles.textSignUp , ...authStyles.textUnderline}}>Regístrate aquí</Text></Pressable>
-        <Text style={authStyles.textSignUp}>o</Text>
-        <Text style={authStyles.textSignUp}>ingresa como invitado</Text>
+        {
+          result.isLoading ? 
+            <ActivityIndicator size="large" />
+          : 
+          <Pressable style={[authStyles.btnPrimary, authStyles.mb20]} onPress={submitLogin}>
+            <Text style={authStyles.btnText}>Iniciar sesión</Text>
+          </Pressable>
+        }
+        
+        <Pressable onPress={ () => navigation.navigate('Signup') } style={authStyles.signUpPressable}>
+          <Text style={authStyles.textSignUp}>¿No tienes una cuenta? </Text>
+          <Text style={ {...authStyles.textSignUp , ...authStyles.textUnderline}}>Regístrate aquí</Text>
+        </Pressable>
       </View>
     </View>
   )

@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { firebase_base_url } from "./firebase";
 
 export const orderApi = createApi({
   reducerPath: "orderApi",
-  baseQuery: fetchBaseQuery({ baseUrl: firebase_base_url}),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL}),
   endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (order) => ({
