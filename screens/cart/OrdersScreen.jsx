@@ -4,16 +4,31 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../../styles/appColors'
 import OrdersProducts from '../../components/OrdersProducts'
 import { useGetOrdersByCustomerQuery } from '../../services/shopService'
+import { useState, useEffect, useCallback} from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+
 
 const OrdersScreen = ( {navigation} ) => {
   const userMail = useSelector(state => state.authReducer.value.user);
-  const { data: orderByCustomer, error, isLoading } = useGetOrdersByCustomerQuery(userMail);
+  const { data, error, isLoading, refetch } = useGetOrdersByCustomerQuery(userMail);
+  const [orderByCustomer, setOrderByCustomer] = useState([]);
 
   const renderOrdersProducts = ({item, index}) => {
     return (
       <OrdersProducts order = {item} key = {index} />
     )
   }
+  useEffect(() => {
+    if (data) {
+      setOrderByCustomer(data);
+    }
+  }, [data]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   return (
     <>
