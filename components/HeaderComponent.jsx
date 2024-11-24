@@ -16,7 +16,7 @@ const HeaderComponent = () => {
   
   const userLogout = () => {
     dispatch(clearUser());
-    clearSessions().then(()=>console.log('Sesiones eliminadas')).catch(()=>console.log('Error al eliminar sesiones'));
+    clearSessions().then().catch(()=>console.log('Error al eliminar sesiones'));
   }
 
   return (

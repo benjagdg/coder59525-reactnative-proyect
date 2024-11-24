@@ -29,13 +29,12 @@ const LoginScreen = ( {navigation} ) => {
   useEffect( () => {
     if (result.isSuccess) {
       dispatch(setUser(result.data));
-      clearSessions().then(res => console.log("Sesiones eliminadas", res)).catch(error => console.log("Error al eliminar sesiones", error));
+      clearSessions().then().catch(error => console.log("Error al eliminar sesiones", error));
       insertSession({
         localId: result.data.localId,
         email: result.data.email,
         token: result.data.idToken
-      }).then(res => console.log("Usuario insertado con éxito", res)).catch(error => console.log("Error al insertar usuario", error));
-      console.log(result.data);
+      }).then().catch(error => console.log("Error al insertar usuario", error));
       if(cartRedirect === true){
         dispatch(setCartRedirect());
         navigation.navigate('Cart');
