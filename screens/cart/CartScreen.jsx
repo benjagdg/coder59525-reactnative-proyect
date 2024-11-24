@@ -33,7 +33,7 @@ const CartScreen = ({ navigation }) => {
 
   const makeLoginFirst = () => {
     dispatch(setCartRedirect())
-    navigation.navigate('Login')
+    navigation.navigate('Profile')
   }
 
   return (

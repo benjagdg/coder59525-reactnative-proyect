@@ -9,6 +9,12 @@ import Toast from 'react-native-toast-message';
 import MainNavigator from './navigation/MainNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { createSessionsTable } from './services/sqlite';
+
+createSessionsTable()
+  .then()
+  .catch((error)=>console.log("Error en SQLite: ", error))
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {

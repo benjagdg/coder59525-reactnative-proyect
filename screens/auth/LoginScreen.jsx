@@ -6,7 +6,7 @@ import Toast from 'react-native-toast-message'
 import authStyles from '../../styles/authStyles'
 import { useUserLoginMutation } from '../../services/authService'
 import { setUser } from '../../features/auth/authSlice'
-import { insertSession, createSessionsTable } from '../../services/sqlite'
+import { insertSession, clearSessions } from '../../services/sqlite'
 import { setCartRedirect } from '../../features/cart/cartSlice'
 
 const LoginScreen = ( {navigation} ) => {
@@ -29,15 +29,13 @@ const LoginScreen = ( {navigation} ) => {
   useEffect( () => {
     if (result.isSuccess) {
       dispatch(setUser(result.data));
-      (async ()=>{
-        try{
-          createSessionsTable();
-          insertSession(result.data);
-        }catch(error){
-          console.log(error);
-        }
-      })()
-
+      clearSessions().then(res => console.log("Sesiones eliminadas", res)).catch(error => console.log("Error al eliminar sesiones", error));
+      insertSession({
+        localId: result.data.localId,
+        email: result.data.email,
+        token: result.data.idToken
+      }).then(res => console.log("Usuario insertado con éxito", res)).catch(error => console.log("Error al insertar usuario", error));
+      console.log(result.data);
       if(cartRedirect === true){
         dispatch(setCartRedirect());
         navigation.navigate('Cart');

@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite/legacy';
 
-const db = SQLite.openDatabase("wabitstore.db")
+const db = SQLite.openDatabase("wabitstore.db");
 
 export const createSessionsTable = () => {
     const promise = new Promise((resolved,rejected)=>{
@@ -26,7 +26,6 @@ export const fetchSession = () => {
     return promise
 }
 
-//FUNCION PELIGROSA:
 export const clearSessions= () => {
     const promise = new Promise((resolved,rejected)=>{
         const query = "DELETE FROM sessions" 
