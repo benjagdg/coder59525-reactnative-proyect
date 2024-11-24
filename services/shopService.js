@@ -19,7 +19,13 @@ export const shopApi = createApi({
         response ? Object.values(response)[0] : null
       )
     }),
+    getOrdersByCustomer: builder.query({
+      query: (userMail) => `orders.json?orderBy="userMail"&equalTo="${userMail}"`,
+      transformResponse: (response) => (
+        response ? Object.values(response) : []
+      )
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery } = shopApi;
+export const { useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, useGetOrdersByCustomerQuery } = shopApi;
