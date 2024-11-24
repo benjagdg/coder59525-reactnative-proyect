@@ -1,17 +1,22 @@
 import { Text, View, TextInput, Pressable, Image, ActivityIndicator } from 'react-native'
 import authStyles from '../../styles/authStyles'
-import { useUserLoginMutation } from '../../services/authService'
 import Toast from 'react-native-toast-message'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { useUserSignupMutation } from '../../services/authService'
 import { setCartRedirect } from '../../features/cart/cartSlice'
+import { setUser } from '../../features/auth/authSlice'
+import { insertSession, clearSessions } from '../../services/sqlite'
 
 const SignupScreen = ( {navigation} ) => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const cartRedirect = useSelector(state => state.cartReducer.value.cartRedirect);
 
-  const [triggerLogin, result] = useUserLoginMutation()
+  const [triggerSignup, result] = useUserSignupMutation()
 
   const submitLogin = () => {
     if(email === '' || password === ''){
@@ -29,22 +34,27 @@ const SignupScreen = ( {navigation} ) => {
       return
     }
     
-    triggerLogin({email, password})
+    triggerSignup({email, password})
   }
 
   useEffect( () => {
     if (result.isSuccess) {
       dispatch(setUser(result.data));
-      createSessionsTable().then(()=>insertSession(result.data)).catch(()=>insertSession(result.data));
+      clearSessions().then().catch(error => console.log("Error al eliminar sesiones", error));
+      insertSession({
+        localId: result.data.localId,
+        email: result.data.email,
+        token: result.data.idToken
+      }).then().catch(error => console.log("Error al insertar usuario", error));
       if(cartRedirect === true){
         dispatch(setCartRedirect());
         navigation.navigate('Cart');
       }else{
         navigation.navigate('Inicio');
       }
-      showToast('success', 'Inicio de sesión exitoso');
+      showToast('success', 'La cuenta ha sido creada con éxito');
     }else if (result.isError) {
-      showToast('error', 'Error al iniciar sesión, vuelva a intentarlo');
+      showToast('error', 'Error: '+ result.error.data.error.message);
     }
   }, [result])
 

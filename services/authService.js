@@ -10,8 +10,15 @@ export const authApi = createApi({
         method: 'POST',
         body: auth,
       }),
-    }), 
+    }),
+    userSignup: builder.mutation({
+      query: ({...auth}) => ({
+        url: `accounts:signUp?key=${process.env.EXPO_PUBLIC_FIREBASE_API_KEY}`,
+        method: 'POST',
+        body: auth,
+      }),
+    }),
   }),
 });
 
-export const { useUserLoginMutation } = authApi;
+export const { useUserLoginMutation, useUserSignupMutation } = authApi;
