@@ -8,7 +8,7 @@ import { usePutUserPictureMutation } from '../../services/userService';
 import colors from '../../styles/appColors';
 import HeaderComponent from '../../components/HeaderComponent';
 
-const ProfileScreen = ( {navigation} ) => {
+const ProfileScreen = () => {
 
   const user = useSelector(state=>state.authReducer.value.user)
   const userImage = useSelector(state=>state.authReducer.value.profilePicture)
@@ -58,9 +58,6 @@ const ProfileScreen = ( {navigation} ) => {
     <>
       <HeaderComponent />
       <View style={styles.sectionHeader}>
-        <Pressable onPress={() => navigation.navigate('Inicio')} style={styles.backButton}>
-          <Icon name="arrow-back" size={30} color={colors.textWhite} />
-        </Pressable>
         <Text style={ styles.productsTitle }>Perfil del Usuario</Text>
       </View>
       <View style={styles.profileContainer}>
