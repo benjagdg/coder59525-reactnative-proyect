@@ -2,18 +2,17 @@ import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../../styles/appColors'
-import OrderProduct from '../../components/OrderProduct'
+import OrdersProducts from '../../components/OrdersProducts'
 import { useGetOrdersByCustomerQuery } from '../../services/shopService'
 
 const OrdersScreen = ( {navigation} ) => {
   const userMail = useSelector(state => state.authReducer.value.user);
   const { data: orderByCustomer, error, isLoading } = useGetOrdersByCustomerQuery(userMail);
-  console.log(orderByCustomer)
 
   const renderOrdersProducts = ({item, index}) => {
     return (
-      <OrderProduct
-        product = {item.cartItems[0]}
+      <OrdersProducts
+        order = {item}
         key = {index}
       />
     )
