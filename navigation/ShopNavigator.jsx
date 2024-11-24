@@ -8,7 +8,7 @@ const ShopNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={ {
-        header: ({route}) => <HeaderComponent sectionTitle={route.name} />
+        header: () => <HeaderComponent/>
       } }
     >
       <Stack.Screen name="Inicio" component={HomeScreen} />

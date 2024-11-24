@@ -3,10 +3,10 @@ import authStyles from '../../styles/authStyles'
 import { useUserLoginMutation } from '../../services/authService'
 import Toast from 'react-native-toast-message'
 import { useEffect, useState } from 'react'
-
+import { setCartRedirect } from '../../features/cart/cartSlice'
 
 const SignupScreen = ( {navigation} ) => {
-
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -28,8 +28,25 @@ const SignupScreen = ( {navigation} ) => {
       showToast('error', 'Las contraseñas no coinciden')
       return
     }
+    
     triggerLogin({email, password})
   }
+
+  useEffect( () => {
+    if (result.isSuccess) {
+      dispatch(setUser(result.data));
+      createSessionsTable().then(()=>insertSession(result.data)).catch(()=>insertSession(result.data));
+      if(cartRedirect === true){
+        dispatch(setCartRedirect());
+        navigation.navigate('Cart');
+      }else{
+        navigation.navigate('Inicio');
+      }
+      showToast('success', 'Inicio de sesión exitoso');
+    }else if (result.isError) {
+      showToast('error', 'Error al iniciar sesión, vuelva a intentarlo');
+    }
+  }, [result])
 
   const showToast = (type, message) => {
     Toast.show({

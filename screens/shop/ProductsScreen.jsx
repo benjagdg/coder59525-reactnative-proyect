@@ -19,11 +19,9 @@ const ProductsScreen = ( {navigation} ) => {
       setFilteredProducts(productsByCategory)
     if(search)
       setFilteredProducts(productsByCategory.filter(product => product.nombre.toLowerCase().includes(search.toLowerCase())))
-  },[search, productsByCategory])
+  },[search, productsByCategory, isLoading])
 
-  useEffect(() => {
-    if(category === '') navigation.navigate('Inicio')
-  }, [])
+  if(category === '') navigation.navigate('Inicio')
 
   const renderProducts = ({item, index}) => {
     return (
@@ -61,7 +59,7 @@ const ProductsScreen = ( {navigation} ) => {
           {
             isLoading ? <ActivityIndicator size="large" /> : 
             error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> : 
-            filteredProducts.length === 0 ? <Text style={styles.productsEmpty}>0 productos encontrados...</Text> :
+            filteredProducts.length === 0 && productsByCategory.length === 0 ? <Text style={styles.productsEmpty}>No hay productos en esta categoría...</Text> :
             filteredProducts.map((item, index) => renderProducts({item, index}))
           }
         </View>

@@ -1,7 +1,7 @@
 const colors = {
   darkBlue: '#111827',
   lightBlue: '#0370C3',
-  lightPurple: '#A78BFA',
+  lightPurple: '#7d52fa',
 
   lightBackground: '#E8E8E8',
   darkBackground: '#212121',

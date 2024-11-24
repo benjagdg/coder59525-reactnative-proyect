@@ -4,11 +4,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../../styles/appColors'
 import CartProduct from '../../components/CartProduct'
 import { useCreateOrderMutation } from '../../services/orderService'
-import { cleanCart } from '../../features/cart/cartSlice'
+import { cleanCart, setCartRedirect } from '../../features/cart/cartSlice'
 
 const CartScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
+  const userMail = useSelector(state => state.authReducer.value.user);
   const cartItems = useSelector(state => state.cartReducer.value.cartItems);
   const cartTotal = useSelector(state => state.cartReducer.value.cartTotal);
   const cartLength = useSelector(state => state.cartReducer.value.cartLength);
@@ -25,9 +26,14 @@ const CartScreen = ({ navigation }) => {
   }
 
   const cartOrderProcess = () => {
-    createOrder({cartItems, cartTotal, createdAt: Date.now()})
+    createOrder({cartItems, cartTotal, createdAt: Date.now(), userMail})
     dispatch(cleanCart())
     navigation.navigate('Orders')
+  }
+
+  const makeLoginFirst = () => {
+    dispatch(setCartRedirect())
+    navigation.navigate('Login')
   }
 
   return (
@@ -52,12 +58,22 @@ const CartScreen = ({ navigation }) => {
           />
           <View style={styles.cartTotal}>
             <Text style={styles.cartTotalText}>Total: {new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(cartTotal)}</Text>
-            <Pressable 
-              style={styles.cartButton} 
-              onPress={ ()=>{ cartOrderProcess() } }>
-              <Text style={styles.cartButtonText}>Confirmar</Text>
-              <Text style={styles.cartButtonText}><Icon name="shopping-cart-checkout" size={22} color={colors.textWhite} /></Text>
-            </Pressable>
+            {
+              userMail ?
+              <Pressable 
+                style={styles.cartButton} 
+                onPress={ ()=>{ cartOrderProcess() } }>
+                <Text style={styles.cartButtonText}>Confirmar Compra</Text>
+                <Text style={styles.cartButtonText}><Icon name="shopping-cart-checkout" size={22} color={colors.textWhite} /></Text>
+              </Pressable>
+              :
+              <Pressable 
+                style={styles.cartButton} 
+                onPress={ ()=>{ makeLoginFirst() } }>
+                <Text style={styles.cartButtonText}>Inicia Sesión para Continuar</Text>
+                <Text style={styles.cartButtonText}><Icon name="login" size={22} color={colors.textWhite} /></Text>
+              </Pressable>
+            }
           </View>
         </View>
       }
@@ -91,7 +107,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   cartTotal: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10

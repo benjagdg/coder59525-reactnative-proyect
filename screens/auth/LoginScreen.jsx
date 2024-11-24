@@ -1,17 +1,20 @@
 import { Text, View, TextInput, Pressable, Image, ActivityIndicator } from 'react-native'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Toast from 'react-native-toast-message'
 
 import authStyles from '../../styles/authStyles'
 import { useUserLoginMutation } from '../../services/authService'
 import { setUser } from '../../features/auth/authSlice'
-import { insertSession } from '../../services/sqlite'
+import { insertSession, createSessionsTable } from '../../services/sqlite'
+import { setCartRedirect } from '../../features/cart/cartSlice'
 
 const LoginScreen = ( {navigation} ) => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+  const cartRedirect = useSelector(state => state.cartReducer.value.cartRedirect);
 
   const [triggerLogin, result] = useUserLoginMutation()
 
@@ -20,16 +23,27 @@ const LoginScreen = ( {navigation} ) => {
       showToast('error', 'Debes completar todos los campos')
       return
     }
-    const emailLower = email.toLowerCase();
-    triggerLogin({emailLower, password})
+    triggerLogin({email, password})
   }
 
   useEffect( () => {
     if (result.isSuccess) {
       dispatch(setUser(result.data));
-      insertSession(result.data);
+      (async ()=>{
+        try{
+          createSessionsTable();
+          insertSession(result.data);
+        }catch(error){
+          console.log(error);
+        }
+      })()
 
-      navigation.navigate('Inicio');
+      if(cartRedirect === true){
+        dispatch(setCartRedirect());
+        navigation.navigate('Cart');
+      }else{
+        navigation.navigate('Inicio');
+      }
       showToast('success', 'Inicio de sesión exitoso');
     }else if (result.isError) {
       showToast('error', 'Error al iniciar sesión, vuelva a intentarlo');

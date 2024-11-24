@@ -1,8 +1,24 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import colors from '../styles/appColors'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector, useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { clearUser } from '../features/auth/authSlice';
+import { useEffect } from 'react';
+import { clearSessions } from '../services/sqlite'
 
-const HeaderComponent = ({sectionTitle}) => {
+const HeaderComponent = () => {
+  const userMail = useSelector(state => state.authReducer.value.user);
+  useEffect(() => {
+  },[userMail])
+    
+  const dispatch = useDispatch();
+  
+  const userLogout = () => {
+    dispatch(clearUser());
+    clearSessions().then(()=>console.log('Sesiones eliminadas')).catch(()=>console.log('Error al eliminar sesiones'));
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -10,7 +26,14 @@ const HeaderComponent = ({sectionTitle}) => {
         <Text style={styles.headerTitle}> Wabit Store</Text>
       </View>
       <View style={{flex:1, alignItems:"flex-end"}}>
-        <Text style={styles.sectionTitle}> {sectionTitle}</Text>
+        {
+          userMail ? 
+            <Pressable style={styles.userLogoutPressable} onPress={ () => {userLogout()} }>
+              <Text style={styles.userLogoutText}>Cerrar sesión</Text>
+              <Text style={styles.userLogoutIcon}><Icon name="logout" size={18} color={colors.textWhite} /></Text>
+            </Pressable> 
+          : null
+        }
       </View>
     </SafeAreaView>
   )
@@ -41,9 +64,20 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Black",
     marginTop: 2
   },
-  sectionTitle:{
-    fontSize: 16,
-    fontFamily: "Poppins-Light"
+  userLogoutPressable: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 5,
+    paddingHorizontal: 10,
+    backgroundColor: colors.lightPurple,
+    borderRadius: 15
+  },
+  userLogoutIcon:{
+    marginLeft: 5
+  },
+  userLogoutText:{
+    color: colors.textWhite
   }
 
 })

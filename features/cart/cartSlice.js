@@ -7,7 +7,8 @@ export const cartSlice = createSlice({
     value:{
       cartItems: [],
       cartTotal: 0,
-      cartLength: 0
+      cartLength: 0,
+      cartRedirect: false
     }
   },
   reducers: {
@@ -49,9 +50,14 @@ export const cartSlice = createSlice({
       state.value.cartItems = [];
       state.value.cartTotal = 0;
       state.value.cartLength = 0;
+    },
+
+    setCartRedirect: (state) => {
+      state.value.cartRedirect = !state.value.cartRedirect;
     }
+
   }
 });
 
-export const { addItemToCart, removeItemQuantityFromCart, addItemQuantityToCart, cleanCart } = cartSlice.actions;
+export const { addItemToCart, removeItemQuantityFromCart, addItemQuantityToCart, cleanCart, setCartRedirect } = cartSlice.actions;
 export default cartSlice.reducer;
