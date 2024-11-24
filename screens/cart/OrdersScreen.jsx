@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Pressable, FlatList, ActivityIndicator } from 'react-native'
 import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../../styles/appColors'
@@ -11,10 +11,7 @@ const OrdersScreen = ( {navigation} ) => {
 
   const renderOrdersProducts = ({item, index}) => {
     return (
-      <OrdersProducts
-        order = {item}
-        key = {index}
-      />
+      <OrdersProducts order = {item} key = {index} />
     )
   }
 
@@ -27,19 +24,14 @@ const OrdersScreen = ( {navigation} ) => {
         <Text style={ styles.sectionTitle }>Mis compras</Text>
       </View>
       {
-        !orderByCustomer ? 
-        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-          <Text style={styles.sectionTitle}>No tienes compras registradas</Text>
-        </View> :
-
         <View style={styles.cartContainer}>
           {
             isLoading ? <ActivityIndicator size="large" /> : 
-            error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> : 
+            error ? <Text>Ocurrió un error, vuelva a intentarlo</Text> :
             <FlatList
               data={orderByCustomer}
               renderItem={renderOrdersProducts}
-              keyExtractor={item => item.id}
+              keyExtractor={(item, index) => index.toString()}
             />
           }
         </View>

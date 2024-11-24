@@ -8,7 +8,7 @@ const OrdersNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={ {
-        header: ({route}) => <HeaderComponent sectionTitle={route.name} />
+        header: () => <HeaderComponent />
       } }
     >
       <Stack.Screen name="Tus compras" component={OrdersScreen} />

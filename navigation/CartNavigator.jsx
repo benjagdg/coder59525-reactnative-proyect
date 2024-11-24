@@ -8,7 +8,7 @@ const CartNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={ {
-        header: ({route}) => <HeaderComponent sectionTitle={route.name} />
+        header: () => <HeaderComponent />
       } }
     >
       <Stack.Screen name="Mi Carrito" component={CartScreen} />

@@ -23,7 +23,7 @@ export const shopApi = createApi({
       query: (userMail) => `orders.json?orderBy="userMail"&equalTo="${userMail}"`,
       transformResponse: (response) => (
         response ? Object.values(response) : []
-      )
+      ),
     }),
   }),
 });

@@ -5,7 +5,7 @@ const OrdersProducts = ( {order} ) => {
   return (
     <View style={orderListStyle.orderContainer}>
       <View style={orderListStyle.orderHeader}>
-        <Text style={orderListStyle.orderTitle}>Pedido {order.createdAt}</Text>
+        <Text style={orderListStyle.orderTitle}>Pedido #{order.createdAt}</Text>
         <Text style={orderListStyle.orderDate}>{
           new Date(order.createdAt).toLocaleDateString().concat(' ', new Date(order.createdAt).toLocaleTimeString())
         }</Text>

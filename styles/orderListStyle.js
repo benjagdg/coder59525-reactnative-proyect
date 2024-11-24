@@ -3,10 +3,10 @@ import colors from "./appColors";
 
 const orderListStyle = StyleSheet.create({
   orderContainer: {
-    backgroundColor: colors.lightGray,
     margin: 10,
     padding: 10,
-    borderRadius: 10
+    borderRadius: 12,
+    backgroundColor: colors.whiteColor,
   },
   orderHeader: {
     flexDirection: 'row',
@@ -17,7 +17,7 @@ const orderListStyle = StyleSheet.create({
     paddingBottom: 2
   },
   orderTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Poppins-Black',
     color: colors.textPrimary
   },
@@ -28,7 +28,8 @@ const orderListStyle = StyleSheet.create({
   },
   orderListContainer: {
     flexDirection: 'row',
-    marginVertical: 10
+    marginVertical: 10,
+    
   },
   orderListImageContainer: {
     flex: 1
